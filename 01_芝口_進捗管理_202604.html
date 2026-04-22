@@ -1,0 +1,967 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=1400">
+<title>芝口美香 担当 進捗管理表 ─ KAM準備業務</title>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#FFF5F3;--white:#FFFFFF;--border:#E8C4CC;
+  --text-dark:#1A2341;--text-mid:#4A5578;--text-light:#8B95B0;
+  --primary:#4F6AE8;--primary-light:#EBF0FF;--primary-dark:#3A50C2;
+  --green:#22C993;--green-light:#E6FAF2;
+  --red:#F0605D;--red-light:#FFF0EF;
+  --orange:#F5A623;--orange-light:#FFF8EB;
+  --purple:#9B6BF7;--purple-light:#F3EEFF;
+  --cyan:#17C5D6;--cyan-light:#E4FAFB;
+  --pink:#E96DB0;--pink-light:#FFF0F8;
+  --gold:#D4A843;--gold-light:#FFF9EB;
+  --shadow-sm:0 2px 8px rgba(79,106,232,.06);
+  --shadow-md:0 8px 24px rgba(79,106,232,.10);
+  --radius:18px;--radius-sm:12px;
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+body{font-family:'Plus Jakarta Sans',-apple-system,'Hiragino Sans',sans-serif;background:var(--bg);color:var(--text-dark);}
+
+/* ─── SIDEBAR ─── */
+.sidebar{position:fixed;left:0;top:0;width:260px;height:100vh;background:linear-gradient(180deg,#fff 0%,#F7F9FF 100%);border-right:1px solid var(--border);display:flex;flex-direction:column;z-index:100;}
+.sidebar-logo{padding:22px 20px 18px;display:flex;align-items:center;gap:12px;}
+.sidebar-logo .icon{width:40px;height:40px;border-radius:12px;background:linear-gradient(135deg,#4F6AE8,#9B6BF7);display:flex;align-items:center;justify-content:center;color:#fff;font-size:17px;font-weight:800;}
+.sidebar-logo .title{font-size:15px;font-weight:800;background:linear-gradient(135deg,var(--primary),var(--purple));-webkit-background-clip:text;-webkit-text-fill-color:transparent;line-height:1.3;}
+.sidebar-nav{flex:1;padding:0 12px;overflow-y:auto;}
+.nav-label{font-size:10px;font-weight:800;color:var(--text-light);text-transform:uppercase;letter-spacing:1.5px;padding:14px 10px 6px;}
+.nav-item{display:flex;align-items:center;gap:10px;padding:9px 10px;border-radius:10px;cursor:pointer;transition:all .2s;font-size:13px;font-weight:500;color:var(--text-mid);margin-bottom:2px;}
+.nav-item:hover{background:var(--primary-light);color:var(--primary);}
+.nav-item.active{background:var(--primary-light);color:var(--primary);font-weight:700;box-shadow:inset 3px 0 0 var(--primary);}
+.nav-item .emoji{font-size:15px;width:20px;text-align:center;}
+
+.sidebar-user{padding:14px 18px;border-top:1px solid var(--border);display:flex;align-items:center;gap:10px;}
+.sidebar-user .avatar{width:34px;height:34px;border-radius:10px;background:linear-gradient(135deg,var(--cyan),var(--primary));display:flex;align-items:center;justify-content:center;color:#fff;font-size:13px;font-weight:700;}
+.sidebar-user .info .name{font-size:12px;font-weight:700;}
+.sidebar-user .info .role{font-size:10px;color:var(--text-light);}
+
+/* ─── MAIN ─── */
+.main{margin-left:260px;padding:28px 32px;min-height:100vh;}
+.page-header{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:24px;}
+.page-header h1{font-size:24px;font-weight:800;background:linear-gradient(135deg,var(--text-dark),var(--primary));-webkit-background-clip:text;-webkit-text-fill-color:transparent;}
+.page-header .subtitle{font-size:13px;color:var(--text-light);margin-top:4px;-webkit-text-fill-color:var(--text-light);}
+.header-actions{display:flex;gap:10px;align-items:center;}
+.btn{border:none;border-radius:10px;padding:9px 18px;font-size:12.5px;font-weight:700;cursor:pointer;font-family:inherit;transition:all .2s;}
+.btn-primary{background:linear-gradient(135deg,var(--primary),var(--purple));color:#fff;box-shadow:0 4px 12px rgba(79,106,232,.25);}
+.btn-primary:hover{transform:translateY(-1px);}
+.btn-outline{background:var(--white);border:1px solid var(--border);color:var(--text-mid);}
+.btn-outline:hover{border-color:var(--primary);color:var(--primary);}
+.btn-gold{background:linear-gradient(135deg,var(--gold),var(--orange));color:#fff;}
+.date-badge{background:var(--white);border:1px solid var(--border);border-radius:10px;padding:8px 14px;font-size:12px;font-weight:600;color:var(--text-mid);}
+
+/* ─── KPI CARDS ─── */
+.kpi-row{display:grid;grid-template-columns:repeat(6,1fr);gap:14px;margin-bottom:24px;}
+.kpi-card{background:var(--white);border:1px solid var(--border);border-radius:var(--radius-sm);padding:18px;box-shadow:var(--shadow-sm);}
+.kpi-card .kpi-label{font-size:10.5px;font-weight:700;color:var(--text-light);margin-bottom:6px;}
+.kpi-card .kpi-value{font-size:28px;font-weight:800;color:var(--text-dark);}
+.kpi-card .kpi-sub{font-size:10px;color:var(--text-light);margin-top:3px;}
+.kpi-card.kpi-rate .kpi-value{background:linear-gradient(135deg,var(--primary),var(--purple));-webkit-background-clip:text;-webkit-text-fill-color:transparent;}
+.kpi-card.kpi-active .kpi-value{color:var(--cyan);}
+.kpi-card.kpi-todo .kpi-value{color:var(--text-mid);}
+.kpi-card.kpi-delay .kpi-value{color:var(--orange);}
+.kpi-card.kpi-high .kpi-value{color:var(--red);}
+.kpi-card.kpi-over .kpi-value{color:var(--red);}
+
+/* ─── FILTER BAR ─── */
+.filter-bar{background:var(--white);border:1px solid var(--border);border-radius:var(--radius-sm);padding:12px 16px;display:flex;align-items:center;gap:10px;margin-bottom:20px;box-shadow:var(--shadow-sm);}
+.search-box{flex:1;border:1px solid var(--border);border-radius:8px;padding:7px 12px;font-size:13px;font-family:inherit;color:var(--text-dark);outline:none;}
+.search-box:focus{border-color:var(--primary);}
+.filter-select{border:1px solid var(--border);border-radius:8px;padding:7px 10px;font-size:12.5px;font-family:inherit;color:var(--text-mid);outline:none;cursor:pointer;background:var(--white);}
+.filter-select:focus{border-color:var(--primary);}
+.add-btn{background:linear-gradient(135deg,var(--primary),var(--purple));color:#fff;border:none;border-radius:8px;padding:7px 14px;font-size:12.5px;font-weight:700;cursor:pointer;font-family:inherit;white-space:nowrap;}
+
+/* ─── TASK TABLE ─── */
+.task-table-wrap{background:var(--white);border:1px solid var(--border);border-radius:var(--radius);box-shadow:var(--shadow-sm);overflow:hidden;}
+.task-table{width:100%;border-collapse:collapse;}
+.task-table thead th{font-size:11px;font-weight:800;color:var(--text-light);text-align:left;padding:12px 14px;border-bottom:2px solid var(--border);background:#FAFBFF;white-space:nowrap;}
+.task-table thead th:first-child{width:50px;text-align:center;}
+.task-table thead th.col-cat{width:110px;}
+.task-table thead th.col-name{min-width:200px;}
+.task-table thead th.col-pri{width:80px;}
+.task-table thead th.col-due{width:100px;}
+.task-table thead th.col-status{width:90px;}
+.task-table thead th.col-memo{min-width:180px;}
+.task-table thead th.col-prog{min-width:160px;}
+.task-table thead th.col-admin{min-width:140px;}
+
+/* Category header rows */
+.cat-row td{padding:10px 14px;font-size:12px;font-weight:800;background:var(--bg);border-top:2px solid var(--border);border-bottom:1px solid var(--border);cursor:pointer;user-select:none;}
+.cat-row td .cat-toggle{margin-right:6px;transition:transform .2s;display:inline-block;}
+.cat-row td .cat-count{font-size:10px;font-weight:600;color:var(--text-light);margin-left:8px;}
+.cat-row td .cat-progress{margin-left:auto;display:inline-flex;align-items:center;gap:6px;float:right;}
+.cat-row td .mini-bar{width:80px;height:5px;background:#E2E8F4;border-radius:3px;overflow:hidden;}
+.cat-row td .mini-bar-fill{height:100%;border-radius:3px;transition:width .3s;}
+
+/* Task rows */
+.task-row{border-bottom:1px solid #EEF2FF;transition:background .15s;}
+.task-row:hover{background:#F8FAFF;}
+.task-row.hidden{display:none;}
+.task-row td{padding:11px 14px;font-size:13px;color:var(--text-mid);vertical-align:middle;}
+.task-row td:first-child{text-align:center;font-size:11px;font-weight:700;color:var(--text-light);}
+
+/* Status badges */
+.status-badge{display:inline-block;font-size:10.5px;font-weight:800;padding:4px 10px;border-radius:8px;white-space:nowrap;cursor:pointer;border:none;font-family:inherit;}
+.s-todo{background:var(--bg);color:var(--text-light);}
+.s-active{background:var(--cyan-light);color:var(--cyan);}
+.s-done{background:var(--green-light);color:var(--green);}
+.s-delay{background:var(--orange-light);color:var(--orange);}
+
+/* Priority stars */
+.pri{display:flex;gap:2px;}
+.star{font-size:12px;}
+
+/* Category tags */
+.cat-tag{display:inline-block;font-size:10px;font-weight:700;padding:3px 8px;border-radius:6px;white-space:nowrap;}
+.ct-finance{background:var(--primary-light);color:var(--primary);}
+.ct-insurance{background:var(--green-light);color:var(--green);}
+.ct-labor{background:var(--cyan-light);color:var(--cyan);}
+.ct-agreement{background:var(--purple-light);color:var(--purple);}
+.ct-subsidy{background:var(--gold-light);color:var(--gold);}
+.ct-vehicle{background:var(--orange-light);color:var(--orange);}
+.ct-it{background:var(--pink-light);color:var(--pink);}
+.ct-transfer{background:var(--cyan-light);color:var(--cyan);}
+.ct-ops{background:var(--red-light);color:var(--red);}
+.ct-edu{background:var(--green-light);color:var(--green);}
+.ct-property{background:#FFF0F3;color:#C46B8A;}
+.ct-sysContract{background:var(--purple-light);color:var(--purple);}
+.ct-inherit{background:var(--bg);color:var(--text-mid);}
+
+/* Memo cells */
+.memo-cell{font-size:11.5px;color:var(--text-mid);line-height:1.5;}
+.prog-cell{font-size:11.5px;line-height:1.5;}
+.admin-cell{font-size:11.5px;color:var(--primary-dark);line-height:1.5;cursor:pointer;}
+.admin-cell:empty::after{content:'ダブルクリックで入力';color:var(--border);font-size:10px;}
+[contenteditable]:focus{outline:2px solid var(--primary);border-radius:4px;padding:2px 4px;}
+
+/* Needs education badge */
+.edu-badge{display:inline-block;font-size:9.5px;font-weight:700;padding:2px 7px;border-radius:5px;background:#FFF0F8;color:var(--pink);margin-left:5px;vertical-align:middle;}
+
+/* ─── TABS ─── */
+.tab-content{display:none;}
+.tab-content.active{display:block;}
+.tab-nav{display:flex;gap:4px;margin-bottom:20px;background:var(--white);border:1px solid var(--border);border-radius:12px;padding:4px;width:fit-content;box-shadow:var(--shadow-sm);}
+.tab-btn{padding:8px 18px;border-radius:8px;font-size:12.5px;font-weight:600;cursor:pointer;border:none;background:transparent;font-family:inherit;color:var(--text-mid);transition:all .2s;}
+.tab-btn.active{background:linear-gradient(135deg,var(--primary),var(--purple));color:#fff;box-shadow:0 3px 10px rgba(79,106,232,.2);}
+.tab-btn:hover:not(.active){background:var(--primary-light);color:var(--primary);}
+
+/* ─── EDUCATION SCHEDULE ─── */
+.edu-timeline{display:flex;flex-direction:column;gap:16px;}
+.edu-month{background:var(--white);border:1px solid var(--border);border-radius:var(--radius-sm);overflow:hidden;box-shadow:var(--shadow-sm);}
+.edu-month-header{padding:14px 20px;display:flex;align-items:center;gap:14px;border-bottom:1px solid var(--border);}
+.edu-month-label{font-size:15px;font-weight:800;}
+.edu-month-phase{font-size:11px;font-weight:700;padding:3px 10px;border-radius:6px;}
+.edu-month-body{padding:16px 20px;display:grid;grid-template-columns:1fr 1fr;gap:12px;}
+.edu-item{background:var(--bg);border-radius:10px;padding:14px;}
+.edu-item .edu-title{font-size:13px;font-weight:700;margin-bottom:6px;}
+.edu-item .edu-desc{font-size:11.5px;color:var(--text-mid);line-height:1.6;}
+.edu-item .edu-resource{margin-top:8px;font-size:11px;color:var(--primary);font-weight:600;}
+.edu-item .edu-resource::before{content:'📚 参考資料: ';}
+
+/* ─── MATERIALS ─── */
+.materials-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;}
+.material-card{background:var(--white);border:1px solid var(--border);border-radius:var(--radius-sm);padding:20px;box-shadow:var(--shadow-sm);transition:all .25s;}
+.material-card:hover{box-shadow:var(--shadow-md);transform:translateY(-2px);}
+.material-card .mat-icon{font-size:28px;margin-bottom:10px;}
+.material-card .mat-cat{font-size:10px;font-weight:700;padding:3px 8px;border-radius:5px;margin-bottom:8px;display:inline-block;}
+.material-card h4{font-size:13.5px;font-weight:700;margin-bottom:6px;}
+.material-card p{font-size:11.5px;color:var(--text-mid);line-height:1.6;}
+.material-card .mat-where{margin-top:10px;font-size:11px;font-weight:600;color:var(--text-light);}
+.material-card .mat-where span{color:var(--primary);}
+
+
+/* ─── PROGRESS BAR ─── */
+.progress-wrap{background:#E2E8F4;border-radius:8px;height:8px;overflow:hidden;margin-top:4px;}
+.progress-fill{height:100%;border-radius:8px;transition:width .4s;}
+
+@media print{.sidebar,.filter-bar,.header-actions,.tab-nav{display:none;}.main{margin-left:0;padding:16px;}}
+</style>
+</head>
+<body>
+
+<div class="sidebar">
+  <div class="sidebar-logo">
+    <div class="icon">K</div>
+    <div class="title">KAM準備業務<br>進捗管理</div>
+  </div>
+  <div class="sidebar-nav">
+    <div class="nav-label">メインメニュー</div>
+    <div class="nav-item active" onclick="switchTab('tasks',this)"><span class="emoji">📋</span> タスク一覧</div>
+    <div class="nav-item" onclick="switchTab('edu',this)"><span class="emoji">📚</span> 教育スケジュール</div>
+    <div class="nav-item" onclick="switchTab('materials',this)"><span class="emoji">📖</span> 学習資料一覧</div>
+    <div class="nav-label">フェーズ別</div>
+    <div class="nav-item" onclick="switchTab('tasks',this);filterPhase('ph1')"><span class="emoji">⚡</span> PHASE 1｜基盤整備</div>
+    <div class="nav-item" onclick="switchTab('tasks',this);filterPhase('ph2')"><span class="emoji">👥</span> PHASE 2｜人事・労務</div>
+    <div class="nav-item" onclick="switchTab('tasks',this);filterPhase('ph3')"><span class="emoji">🚛</span> PHASE 3｜車両・保険</div>
+    <div class="nav-item" onclick="switchTab('tasks',this);filterPhase('ph4')"><span class="emoji">💻</span> PHASE 4｜IT導入</div>
+    <div class="nav-item" onclick="switchTab('tasks',this);filterPhase('ph5')"><span class="emoji">🔧</span> PHASE 5｜運行準備</div>
+  </div>
+  <div class="sidebar-user">
+    <div class="avatar">芝</div>
+    <div class="info">
+      <div class="name">芝口美香</div>
+      <div class="role">KAM準備担当｜経理出身</div>
+    </div>
+  </div>
+</div>
+
+<div class="main">
+  <div class="page-header">
+    <div>
+      <h1>■ KAM準備業務 進捗管理表</h1>
+      <div class="subtitle">担当：芝口美香 ─ 2026年4〜10月度（営業開始準備フェーズ）</div>
+    </div>
+    <div class="header-actions">
+      <div class="date-badge">📅 2026年4月1日</div>
+      <button class="btn btn-primary" onclick="window.print()">🖨️ 印刷</button>
+    </div>
+  </div>
+
+  <!-- KPI -->
+  <div class="kpi-row" id="kpi-row">
+    <div class="kpi-card kpi-rate"><div class="kpi-label">完了率</div><div class="kpi-value" id="kpi-rate-val">0%</div><div class="kpi-sub" id="kpi-rate-sub">0/37件</div></div>
+    <div class="kpi-card kpi-active"><div class="kpi-label">進行中</div><div class="kpi-value" id="kpi-active-val">0</div><div class="kpi-sub">件</div></div>
+    <div class="kpi-card kpi-todo"><div class="kpi-label">未着手</div><div class="kpi-value" id="kpi-todo-val">37</div><div class="kpi-sub">件</div></div>
+    <div class="kpi-card kpi-delay"><div class="kpi-label">遅延/保留</div><div class="kpi-value" id="kpi-delay-val">0</div><div class="kpi-sub">件</div></div>
+    <div class="kpi-card kpi-high"><div class="kpi-label">高優先</div><div class="kpi-value" id="kpi-high-val">0</div><div class="kpi-sub">件</div></div>
+    <div class="kpi-card kpi-over"><div class="kpi-label">期限超過</div><div class="kpi-value" id="kpi-over-val">0</div><div class="kpi-sub">件</div></div>
+  </div>
+
+  <!-- TAB NAV -->
+  <div class="tab-nav">
+    <button class="tab-btn active" onclick="switchTab('tasks',this)">📋 タスク一覧</button>
+    <button class="tab-btn" onclick="switchTab('edu',this)">📚 教育スケジュール</button>
+    <button class="tab-btn" onclick="switchTab('materials',this)">📖 学習資料一覧</button>
+  </div>
+
+  <!-- ===== TAB: TASKS ===== -->
+  <div id="tab-tasks" class="tab-content active">
+    <div class="filter-bar">
+      <span style="font-size:14px;">🔍</span>
+      <input class="search-box" type="text" placeholder="業務名・メモで検索..." oninput="applyFilters()">
+      <select class="filter-select" id="f-status" onchange="applyFilters()">
+        <option value="">全ステータス</option>
+        <option value="未着手">未着手</option>
+        <option value="進行中">進行中</option>
+        <option value="完了">完了</option>
+        <option value="遅延/保留">遅延/保留</option>
+      </select>
+      <select class="filter-select" id="f-pri" onchange="applyFilters()">
+        <option value="">全優先度</option>
+        <option value="3">★★★ 高</option>
+        <option value="2">★★ 中</option>
+        <option value="1">★ 低</option>
+      </select>
+      <select class="filter-select" id="f-cat" onchange="applyFilters()">
+        <option value="">全カテゴリ</option>
+        <option value="inherit">前月引継ぎ</option>
+        <option value="property">土地建屋・契約データ化</option>
+        <option value="sysContract">システム契約取りまとめ</option>
+        <option value="finance">財務・経理</option>
+        <option value="insurance">社会・労働保険</option>
+        <option value="labor">就業規則・規程</option>
+        <option value="agreement">協定・届出</option>
+        <option value="subsidy">助成金・補助金</option>
+        <option value="vehicle">車両・保険</option>
+        <option value="it">IT・システム</option>
+        <option value="transfer">転籍・入社手続き</option>
+        <option value="ops">運行管理書類</option>
+        <option value="edu">教育・学習</option>
+      </select>
+    </div>
+
+    <div class="task-table-wrap">
+      <table class="task-table" id="mainTable">
+        <thead>
+          <tr>
+            <th>No</th>
+            <th class="col-cat">カテゴリ</th>
+            <th class="col-name">業務名</th>
+            <th class="col-pri">優先度</th>
+            <th class="col-due">期日</th>
+            <th class="col-status">ステータス</th>
+            <th class="col-memo">業務手順・ポイント</th>
+            <th class="col-prog">進捗・メモ</th>
+            <th class="col-admin">管理者メモ</th>
+          </tr>
+        </thead>
+        <tbody id="taskBody">
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- ===== TAB: EDUCATION ===== -->
+  <div id="tab-edu" class="tab-content">
+    <div style="background:var(--white);border:1px solid var(--border);border-radius:var(--radius);padding:24px;margin-bottom:20px;box-shadow:var(--shadow-sm);">
+      <h3 style="font-size:17px;font-weight:800;margin-bottom:6px;">📚 芝口美香さん 教育スケジュール（2026年4〜10月）</h3>
+      <p style="font-size:13px;color:var(--text-mid);line-height:1.7;">経理業務の知識を活かしながら、人事・労務・運送事業法令・契約書・規程など未経験領域を段階的に習得するプランです。<br>各月のロードマップ業務と並行して学習できるよう設計しています。<span style="color:var(--pink);font-weight:700;">ピンク色の項目は要教育領域</span>です。</p>
+    </div>
+    <div class="edu-timeline">
+
+      <div class="edu-month">
+        <div class="edu-month-header" style="background:linear-gradient(135deg,#EBF0FF,#F3EEFF);">
+          <div class="edu-month-label">🔵 4月（PHASE 1 開始月）</div>
+          <div class="edu-month-phase" style="background:var(--primary-light);color:var(--primary);">基盤整備期</div>
+          <div style="margin-left:auto;font-size:12px;color:var(--text-light);">財務・経理は即戦力。保険手続きの理解が最優先</div>
+        </div>
+        <div class="edu-month-body">
+          <div class="edu-item">
+            <div class="edu-title" style="color:var(--primary);">✅ 税務署関連届出（即戦力）</div>
+            <div class="edu-desc">青色申告・給与支払事務所開設・源泉特例申請。経理経験そのまま活用可能。会社設立後の初期手続きを確実にこなす。</div>
+            <div class="edu-resource">国税庁「法人設立後の届出一覧」</div>
+          </div>
+          <div class="edu-item" style="border-left:3px solid var(--pink);">
+            <div class="edu-title" style="color:var(--pink);">🆕 社会保険・雇用保険の基礎 <span class="edu-badge">要教育</span></div>
+            <div class="edu-desc">労災・雇用・健保・厚生年金の4保険の違いと手続き先を把握。届出期限（事業開始から10日以内等）を覚える。</div>
+            <div class="edu-resource">年金事務所パンフ「社会保険の手続き」／ハローワーク「雇用保険事業主のための手引き」</div>
+          </div>
+          <div class="edu-item" style="border-left:3px solid var(--pink);">
+            <div class="edu-title" style="color:var(--pink);">🆕 一般貨物運送事業の基礎 <span class="edu-badge">要教育</span></div>
+            <div class="edu-desc">「緑ナンバー」とは何か。許可と開始届の違い。5台以上の要件。改善基準告示（拘束時間・休息時間の上限）の概要を理解する。</div>
+            <div class="edu-resource">国交省「一般貨物自動車運送事業の許可申請Q&A」</div>
+          </div>
+          <div class="edu-item">
+            <div class="edu-title" style="color:var(--primary);">✅ 事業計画書・資金繰り表（即戦力）</div>
+            <div class="edu-desc">経理経験を活かして初年度P/L・資金繰り表を作成。助成金申請にも必要。顧問税理士・社労士との窓口対応も担当。</div>
+            <div class="edu-resource">中小企業庁「事業計画書の書き方」</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="edu-month">
+        <div class="edu-month-header" style="background:linear-gradient(135deg,#E4FAFB,#EBF0FF);">
+          <div class="edu-month-label">🟦 5月（PHASE 1 仕上げ月）</div>
+          <div class="edu-month-phase" style="background:var(--cyan-light);color:var(--cyan);">就業規則・法令習得</div>
+          <div style="margin-left:auto;font-size:12px;color:var(--text-light);">就業規則の意味・構成と36協定を理解する月</div>
+        </div>
+        <div class="edu-month-body">
+          <div class="edu-item" style="border-left:3px solid var(--pink);">
+            <div class="edu-title" style="color:var(--pink);">🆕 就業規則の基礎 <span class="edu-badge">要教育</span></div>
+            <div class="edu-desc">就業規則が必要な理由・記載必須事項・労基署届出の手順。「定年を60歳未満で設定する理由」（助成金戦略）も理解する。社労士に作成を依頼し、書類管理と版管理を担当。</div>
+            <div class="edu-resource">全ト協「モデル就業規則（運送業向け）」</div>
+          </div>
+          <div class="edu-item" style="border-left:3px solid var(--pink);">
+            <div class="edu-title" style="color:var(--pink);">🆕 36協定・改善基準告示 <span class="edu-badge">要教育</span></div>
+            <div class="edu-desc">時間外労働協定（36協定）の意味と締結手順。運送業特有の改善基準告示（2024年4月から960時間上限・罰則付き）の理解。会社が違反しないよう管理書類を整備する役割。</div>
+            <div class="edu-resource">厚労省「36協定の書き方ガイドブック」／「改善基準告示パンフレット（運送業版）」</div>
+          </div>
+          <div class="edu-item" style="border-left:3px solid var(--pink);">
+            <div class="edu-title" style="color:var(--pink);">🆕 育児・介護休業規程の基礎 <span class="edu-badge">要教育</span></div>
+            <div class="edu-desc">法定以上の育休制度を整備する意味（助成金受給要件）。パパ育休・看護休暇の有給化の具体的内容。書類管理担当として規程の版管理を行う。</div>
+            <div class="edu-resource">厚労省「育児・介護休業法のあらまし」</div>
+          </div>
+          <div class="edu-item">
+            <div class="edu-title" style="color:var(--primary);">✅ 社労士・税理士との連携体制整備</div>
+            <div class="edu-desc">窓口担当として、社労士・税理士それぞれの担当範囲と連絡手順を確認。書類の受渡し・期限管理のフローを構築。</div>
+            <div class="edu-resource">内部資料「KAM営業開始ロードマップ」</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="edu-month">
+        <div class="edu-month-header" style="background:linear-gradient(135deg,#FFF9EB,#FFF0F8);">
+          <div class="edu-month-label">🟡 6月（PHASE 2）</div>
+          <div class="edu-month-phase" style="background:var(--gold-light);color:var(--gold);">助成金集中月</div>
+          <div style="margin-left:auto;font-size:12px;color:var(--text-light);">助成金申請の仕組みを理解し書類管理を担う月</div>
+        </div>
+        <div class="edu-month-body">
+          <div class="edu-item" style="border-left:3px solid var(--gold);">
+            <div class="edu-title" style="color:var(--gold);">🆕 助成金申請の仕組み（社労士同席） <span class="edu-badge">要教育</span></div>
+            <div class="edu-desc">助成金は「後払い」「事前申請必須」「書類不備で不支給」の3鉄則。65歳超雇用推進・キャリアアップ・両立支援・人材開発の4本柱を社労士と一緒に学ぶ。書類の収集・整理を担当。</div>
+            <div class="edu-resource">JEED「65歳超雇用推進助成金申請マニュアル」／厚労省「キャリアアップ助成金の手引き」</div>
+          </div>
+          <div class="edu-item" style="border-left:3px solid var(--pink);">
+            <div class="edu-title" style="color:var(--pink);">🆕 転籍手続きの法令基礎 <span class="edu-badge">要教育</span></div>
+            <div class="edu-desc">転籍（移籍）は「元の会社を退職＋新会社に入社」。本人同意書が必須。労働条件通知書（新条件）の記載事項。7名分の書類作成・管理を担当。</div>
+            <div class="edu-resource">厚労省「労働条件の明示に関するガイド」</div>
+          </div>
+          <div class="edu-item" style="border-left:3px solid var(--purple);">
+            <div class="edu-title" style="color:var(--purple);">🆕 各種規程・協定の管理方法 <span class="edu-badge">要教育</span></div>
+            <div class="edu-desc">就業規則・36協定・育休規程・賃金規程など、会社が持つべき書類の一覧と管理方法。変更時の版管理（旧版を捨てない）の重要性。助成金審査で古い版が必要になるため。</div>
+            <div class="edu-resource">内部資料「規程管理台帳（作成予定）」</div>
+          </div>
+          <div class="edu-item">
+            <div class="edu-title" style="color:var(--primary);">✅ 賃金台帳・出勤簿の整備</div>
+            <div class="edu-desc">経理経験を活かして3帳簿（賃金台帳・出勤簿・労働者名簿）をJinjerで整備。助成金審査の必須書類のため早期整備が重要。</div>
+            <div class="edu-resource">厚労省「法定帳簿の整備について」</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="edu-month">
+        <div class="edu-month-header" style="background:linear-gradient(135deg,#FFF8EB,#E6FAF2);">
+          <div class="edu-month-label">🟠 7月（PHASE 3）</div>
+          <div class="edu-month-phase" style="background:var(--orange-light);color:var(--orange);">車両・契約書習得</div>
+          <div style="margin-left:auto;font-size:12px;color:var(--text-light);">運送業の契約書・車両法規の基礎を習得する月</div>
+        </div>
+        <div class="edu-month-body">
+          <div class="edu-item" style="border-left:3px solid var(--orange);">
+            <div class="edu-title" style="color:var(--orange);">🆕 運送契約書・車両譲渡契約書の基礎 <span class="edu-badge">要教育</span></div>
+            <div class="edu-desc">運送委託契約（荷主との契約）・車両譲渡契約書の読み方と管理方法。印鑑証明・委任状が必要な場面を理解する。8台分の車両譲渡書類を整理・管理。</div>
+            <div class="edu-resource">国交省「標準貨物自動車運送約款」</div>
+          </div>
+          <div class="edu-item" style="border-left:3px solid var(--orange);">
+            <div class="edu-title" style="color:var(--orange);">🆕 緑ナンバー（事業用ナンバー）の基礎 <span class="edu-badge">要教育</span></div>
+            <div class="edu-desc">白ナンバーと緑ナンバーの法的な違い。「事業用自動車等連絡書」とは何か。名義変更の流れ（陸運局）。実務上の書類フローを把握し、進捗管理を担当。</div>
+            <div class="edu-resource">関東運輸局「事業用自動車の登録手続き」</div>
+          </div>
+          <div class="edu-item" style="border-left:3px solid var(--green);">
+            <div class="edu-title" style="color:var(--green);">🆕 事業用自動車保険の基礎 <span class="edu-badge">要教育</span></div>
+            <div class="edu-desc">自家用と事業用の保険の違い（緑ナンバー専用保険）。対人・対物・積荷保険の種類。神奈川交通共済・損保ジャパン等との契約管理。保険証券の管理を担当。</div>
+            <div class="edu-resource">各保険会社「事業用自動車保険のご案内」</div>
+          </div>
+          <div class="edu-item">
+            <div class="edu-title" style="color:var(--primary);">✅ リース契約書の確認・管理</div>
+            <div class="edu-desc">既存リース契約（ヤマトリース等）の承継手続き。経理経験を活かし月次支払い管理表を作成。解約条件・残価の把握。</div>
+            <div class="edu-resource">各リース会社「契約承継手続きガイド」</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="edu-month">
+        <div class="edu-month-header" style="background:linear-gradient(135deg,#FFF0F8,#EBF0FF);">
+          <div class="edu-month-label">🩷 8月（PHASE 4）</div>
+          <div class="edu-month-phase" style="background:var(--pink-light);color:var(--pink);">ITシステム習得</div>
+          <div style="margin-left:auto;font-size:12px;color:var(--text-light);">Jinjerの実務操作と給与計算フローを習得する月</div>
+        </div>
+        <div class="edu-month-body">
+          <div class="edu-item" style="border-left:3px solid var(--pink);">
+            <div class="edu-title" style="color:var(--pink);">🆕 Jinjer 人事・給与 操作研修 <span class="edu-badge">要教育</span></div>
+            <div class="edu-desc">KAM名義でJinjerアカウントを開設。社員マスタ登録（7名）・就業規則設定・給与計算設定。経理経験は活かせるが、Jinjer特有の操作を習得。毎月の給与計算担当者になる前提で習得。</div>
+            <div class="edu-resource">Jinjer「管理者向けオンボーディングマニュアル」</div>
+          </div>
+          <div class="edu-item" style="border-left:3px solid var(--pink);">
+            <div class="edu-title" style="color:var(--pink);">🆕 IT導入補助金の基礎 <span class="edu-badge">要教育</span></div>
+            <div class="edu-desc">IT導入補助金の仕組み（IT事業者を通じた申請）。Jinjer＋デジタコ等をまとめて申請する方法。申請スケジュールと必要書類の把握。社労士・IT事業者と連携し書類を準備。</div>
+            <div class="edu-resource">中小企業庁「IT導入補助金ガイドブック」</div>
+          </div>
+          <div class="edu-item">
+            <div class="edu-title" style="color:var(--primary);">✅ 会計ソフト本格稼働（即戦力）</div>
+            <div class="edu-desc">弥生会計 or freeeを本格稼働。銀行口座・クレカ連携。KAM名義での帳簿開始。経理経験フル活用。</div>
+            <div class="edu-resource">弥生「法人向け導入マニュアル」</div>
+          </div>
+          <div class="edu-item">
+            <div class="edu-title" style="color:var(--primary);">✅ 月次試算表・経費管理の構築</div>
+            <div class="edu-desc">KAM株式会社の月次試算表フォーマット作成。車両ごとの経費管理（燃料・保険・リース）集計表を設計。</div>
+            <div class="edu-resource">内部資料「勘定科目一覧（作成予定）」</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="edu-month">
+        <div class="edu-month-header" style="background:linear-gradient(135deg,#E6FAF2,#E4FAFB);">
+          <div class="edu-month-label">🟢 9〜10月（PHASE 5）</div>
+          <div class="edu-month-phase" style="background:var(--green-light);color:var(--green);">運行管理・総まとめ</div>
+          <div style="margin-left:auto;font-size:12px;color:var(--text-light);">営業開始前の最終確認・業務フロー整備月</div>
+        </div>
+        <div class="edu-month-body">
+          <div class="edu-item" style="border-left:3px solid var(--red);">
+            <div class="edu-title" style="color:var(--red);">🆕 運行管理書類の基礎 <span class="edu-badge">要教育</span></div>
+            <div class="edu-desc">点呼記録簿・運転日報・運転者台帳など法定書類の種類と記載事項。運行管理者（和田さん）との役割分担。書類の保管期間（1年・3年・5年）を理解し管理体制を構築。</div>
+            <div class="edu-resource">全ト協「運行管理実務講習テキスト」</div>
+          </div>
+          <div class="edu-item" style="border-left:3px solid var(--red);">
+            <div class="edu-title" style="color:var(--red);">🆕 転籍者入社手続き実務 <span class="edu-badge">要教育</span></div>
+            <div class="edu-desc">社保・雇保の資格取得届（7名分）。労働条件通知書の交付。健康診断・適性診断の手配。制服・社員証・名刺等の準備調整。入社書類チェックリストを作成。</div>
+            <div class="edu-resource">厚労省「採用時の手続き一覧」</div>
+          </div>
+          <div class="edu-item">
+            <div class="edu-title" style="color:var(--primary);">✅ 初回給与計算（Jinjer）</div>
+            <div class="edu-desc">転籍者7名の10月末〜11月給与計算をJinjerで初回実施。控除項目（社保・雇保・税）の確認。支給明細の作成と配布。</div>
+            <div class="edu-resource">Jinjer「給与計算マニュアル」</div>
+          </div>
+          <div class="edu-item">
+            <div class="edu-title" style="color:var(--primary);">✅ 業務フロー総まとめ確認</div>
+            <div class="edu-desc">PHASE 1〜5で学んだ全業務フローを確認。営業開始後の月次業務（給与・社保・経理・助成金フォロー）のルーティンを文書化。管理者レビューを受ける。</div>
+            <div class="edu-resource">内部資料「月次業務カレンダー（作成予定）」</div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div><!-- /tab-edu -->
+
+  <!-- ===== TAB: MATERIALS ===== -->
+  <div id="tab-materials" class="tab-content">
+    <div style="background:var(--white);border:1px solid var(--border);border-radius:var(--radius);padding:24px;margin-bottom:20px;box-shadow:var(--shadow-sm);">
+      <h3 style="font-size:17px;font-weight:800;margin-bottom:6px;">📖 芝口美香さん 教育必要資料一覧</h3>
+      <p style="font-size:13px;color:var(--text-mid);">学習優先度の高い順に整理しています。★★★は4〜5月に必ず入手・熟読してください。</p>
+    </div>
+    <div class="materials-grid">
+
+      <div class="material-card">
+        <div class="mat-icon">📋</div>
+        <div class="mat-cat" style="background:var(--primary-light);color:var(--primary);">★★★ 財務・経理</div>
+        <h4>国税庁「法人設立後の届出一覧」</h4>
+        <p>青色申告・給与支払事務所・源泉特例。経理経験者でも法人設立直後の手順を確認するために一読が必要。</p>
+        <div class="mat-where">入手先: <span>国税庁ウェブサイト（無料PDF）</span></div>
+      </div>
+
+      <div class="material-card">
+        <div class="mat-icon">🏥</div>
+        <div class="mat-cat" style="background:var(--green-light);color:var(--green);">★★★ 社会保険</div>
+        <h4>年金事務所「社会保険の手続き（事業主向け）」</h4>
+        <p>健康保険・厚生年金保険の新規適用届から毎月の手続きまでを網羅。資格取得届の書き方が重要。</p>
+        <div class="mat-where">入手先: <span>最寄り年金事務所または日本年金機構ウェブサイト</span></div>
+      </div>
+
+      <div class="material-card">
+        <div class="mat-icon">💼</div>
+        <div class="mat-cat" style="background:var(--cyan-light);color:var(--cyan);">★★★ 雇用保険</div>
+        <h4>ハローワーク「雇用保険事業主のための手引き」</h4>
+        <p>適用事業所設置届から毎年の労働保険料申告まで。助成金申請にも必要な知識の土台。</p>
+        <div class="mat-where">入手先: <span>最寄りハローワーク（無料冊子）</span></div>
+      </div>
+
+      <div class="material-card">
+        <div class="mat-icon">📜</div>
+        <div class="mat-cat" style="background:var(--cyan-light);color:var(--cyan);">★★★ 就業規則</div>
+        <h4>全ト協「モデル就業規則（運送業向け）」</h4>
+        <p>運送業特有の規定（拘束時間・点呼・運転者台帳）が含まれたモデル。社労士が参考にする資料。記載内容を読んで理解しておく。</p>
+        <div class="mat-where">入手先: <span>全日本トラック協会ウェブサイト（会員向け）</span></div>
+      </div>
+
+      <div class="material-card">
+        <div class="mat-icon">⏰</div>
+        <div class="mat-cat" style="background:var(--purple-light);color:var(--purple);">★★★ 36協定</div>
+        <h4>厚労省「36協定の書き方ガイドブック」</h4>
+        <p>時間外労働協定の締結方法・届出手順。運送業の上限（年960時間）の意味と管理方法を理解する。</p>
+        <div class="mat-where">入手先: <span>厚生労働省ウェブサイト（無料PDF）</span></div>
+      </div>
+
+      <div class="material-card">
+        <div class="mat-icon">🚛</div>
+        <div class="mat-cat" style="background:var(--orange-light);color:var(--orange);">★★★ 改善基準告示</div>
+        <h4>厚労省「改善基準告示パンフレット（トラック運転者版）」</h4>
+        <p>1日・1ヶ月・1年の拘束時間上限。休息時間の最低確保。2024年4月から罰則付き。違反ゼロのための基礎知識。</p>
+        <div class="mat-where">入手先: <span>厚生労働省ウェブサイト（無料PDF）</span></div>
+      </div>
+
+      <div class="material-card">
+        <div class="mat-icon">💎</div>
+        <div class="mat-cat" style="background:var(--gold-light);color:var(--gold);">★★★ 助成金</div>
+        <h4>JEED「65歳超雇用推進助成金 申請マニュアル」</h4>
+        <p>定年引上げによる助成金の申請手順。事前手続き・必要書類・申請期限が詳細に記載。社労士と一緒に読む。</p>
+        <div class="mat-where">入手先: <span>JEED（高齢・障害・求職者雇用支援機構）ウェブサイト</span></div>
+      </div>
+
+      <div class="material-card">
+        <div class="mat-icon">💰</div>
+        <div class="mat-cat" style="background:var(--gold-light);color:var(--gold);">★★★ 助成金</div>
+        <h4>厚労省「キャリアアップ助成金の手引き（中小企業向け）」</h4>
+        <p>正社員化コースの計画届・申請書の書き方。転籍者の雇用形態と組み合わせた戦略の理解に必要。</p>
+        <div class="mat-where">入手先: <span>厚生労働省ウェブサイト（無料PDF）</span></div>
+      </div>
+
+      <div class="material-card">
+        <div class="mat-icon">🤝</div>
+        <div class="mat-cat" style="background:var(--pink-light);color:var(--pink);">★★ 育児・介護</div>
+        <h4>厚労省「育児・介護休業法のあらまし」</h4>
+        <p>法定以上の育休規程を整備する際の基準。両立支援等助成金の受給要件確認に使用。</p>
+        <div class="mat-where">入手先: <span>厚生労働省ウェブサイト（無料PDF）</span></div>
+      </div>
+
+      <div class="material-card">
+        <div class="mat-icon">🚗</div>
+        <div class="mat-cat" style="background:var(--orange-light);color:var(--orange);">★★ 車両・運送</div>
+        <h4>国交省「一般貨物自動車運送事業 許可申請Q&A」</h4>
+        <p>許可の要件・開始届のタイミング・運輸開始届とは何か。PHASE 3〜6の業務理解に必要。</p>
+        <div class="mat-where">入手先: <span>国土交通省・関東運輸局ウェブサイト</span></div>
+      </div>
+
+      <div class="material-card">
+        <div class="mat-icon">🖥️</div>
+        <div class="mat-cat" style="background:var(--pink-light);color:var(--pink);">★★ ITシステム</div>
+        <h4>Jinjer「管理者向けオンボーディングマニュアル」</h4>
+        <p>人事・給与・勤怠の初期設定手順。社員マスタ登録・就業規則設定・給与計算設定まで網羅。</p>
+        <div class="mat-where">入手先: <span>Jinjer管理画面内「ヘルプセンター」</span></div>
+      </div>
+
+      <div class="material-card">
+        <div class="mat-icon">📊</div>
+        <div class="mat-cat" style="background:var(--primary-light);color:var(--primary);">★★ 内部資料</div>
+        <h4>内部資料「KAM株式会社 営業開始ロードマップ」</h4>
+        <p>担当業務のすべての根拠となる内部資料。月ごとのタスク・助成金戦略・注意点が網羅されている。常に手元に置いて参照する。</p>
+        <div class="mat-where">入手先: <span>KAM準備資料フォルダ内 HTML ファイル</span></div>
+      </div>
+
+    </div>
+  </div><!-- /tab-materials -->
+
+
+</div><!-- /main -->
+
+<script>
+// ─── TASK DATA ───
+const TASKS = [
+  // カテゴリ：前月引継ぎ
+  {id:'t01',cat:'inherit',catLabel:'前月引継ぎ',phase:'ph1',name:'前月の未完了事項・引継ぎ事項の確認',pri:3,due:'4/15',status:'未着手',memo:'前回の管理者進捗管理の△項目を確認し今月分に転記',prog:'',admin:'',eduFlag:false},
+
+  // カテゴリ：土地建屋・契約データ化
+  {id:'t38',cat:'property',catLabel:'土地建屋・契約データ化',phase:'ph1',name:'STEP1: 契約書類の収集・現物確認',pri:3,due:'4/25',status:'未着手',memo:'1-1 社内保管の土地・建屋関連契約書原本をすべて収集\n1-2 賃貸借契約書（土地）、賃貸借契約書（建屋）、覚書・変更合意書等を分類\n1-3 契約当事者・契約日・契約期間・更新条件の確認、不足書類のリストアップ',prog:'',admin:'復帰後の最優先業務',eduFlag:false},
+  {id:'t39',cat:'property',catLabel:'土地建屋・契約データ化',phase:'ph1',name:'STEP2: 電子データ化（スキャン・PDF化）',pri:3,due:'5/15',status:'未着手',memo:'2-1 全契約書類のスキャン→PDF化（原本は別途保管継続）\n2-2 ファイル命名規則を統一（例:「契約種別_相手先_契約日.pdf」）\n2-3 社内共有フォルダへの格納・アクセス権限設定',prog:'',admin:'',eduFlag:false},
+  {id:'t40',cat:'property',catLabel:'土地建屋・契約データ化',phase:'ph1',name:'STEP3: 契約台帳（一覧表）の作成',pri:3,due:'5/31',status:'未着手',memo:'3-1 契約一覧表をExcelで作成（契約種別・相手方・対象物件・面積・賃料・期間・更新日・特記事項）\n3-2 土地: 所在地・地番・面積・用途地域・所有者・賃借料を整理\n3-3 建屋: 構造・延床面積・築年数・用途・修繕履歴を整理\n3-4 KAMが使用予定のスペースを図面上で特定し、面積・利用目的を明記',prog:'',admin:'',eduFlag:false},
+  {id:'t41',cat:'property',catLabel:'土地建屋・契約データ化',phase:'ph2',name:'STEP4: KAM賃貸契約への活用',pri:2,due:'6/30',status:'未着手',memo:'4-1 データ化した契約情報を元にKAM向け賃貸契約書の条件案を整理\n4-2 賃料算定の根拠資料（近隣相場・固定資産税評価額等）の収集\n4-3 契約書ドラフトの作成→社内確認→締結手続き',prog:'',admin:'',eduFlag:false},
+  {id:'t42',cat:'property',catLabel:'土地建屋・契約データ化',phase:'ph2',name:'賃貸契約書の作成・締結',pri:2,due:'7/31',status:'未着手',memo:'データ化した情報を基にKAM株式会社向けの事業所スペース賃貸契約書を作成。賃料条件・使用範囲・共用部分の取り決め',prog:'',admin:'',eduFlag:false},
+  {id:'t43',cat:'property',catLabel:'土地建屋・契約データ化',phase:'ph3',name:'業務委託契約の整備',pri:2,due:'8/31',status:'未着手',memo:'KAM株式会社から神奈川エアーメッセンジャーへの総務業務委託に関する契約書の作成・条件調整',prog:'',admin:'',eduFlag:false},
+
+  // カテゴリ：システム契約取りまとめ
+  {id:'t44',cat:'sysContract',catLabel:'システム契約取りまとめ',phase:'ph1',name:'現行システム契約の棚卸し',pri:3,due:'4/30',status:'未着手',memo:'神奈川エアーメッセンジャーが現在契約しているシステムの全リストを作成\n対象: Jinjer（人事・給与・勤怠）、ITP-WebService（デジタコ）、運Soul（運転者台帳）、配車システム、その他業務システム',prog:'',admin:'',eduFlag:false},
+  {id:'t45',cat:'sysContract',catLabel:'システム契約取りまとめ',phase:'ph1',name:'各システムの契約内容・期間・費用一覧表の作成',pri:3,due:'5/15',status:'未着手',memo:'契約先・契約期間・月額/年額費用・ライセンス数・更新日・解約条件をExcelで一覧化\n支払い方法（口座振替・請求書払い等）も整理',prog:'',admin:'',eduFlag:false},
+  {id:'t46',cat:'sysContract',catLabel:'システム契約取りまとめ',phase:'ph3',name:'KAM向けシステム利用契約の条件検討',pri:2,due:'7/31',status:'未着手',memo:'KAM株式会社が使用するシステムについて利用契約を検討\n新規契約 or 神奈川エアーメッセンジャーとの利用契約（サブライセンス等）の比較検討\n費用按分の算定方法を整理',prog:'',admin:'',eduFlag:false},
+  {id:'t47',cat:'sysContract',catLabel:'システム契約取りまとめ',phase:'ph4',name:'システム移行・新規契約の実行',pri:2,due:'8/31',status:'未着手',memo:'KAM名義での新規契約が必要なシステムの申込み手続き\nJinjer（KAMアカウント）、会計ソフト、デジタコ等の契約と初期設定\nIT導入補助金との連携も考慮',prog:'',admin:'',eduFlag:false},
+  {id:'t48',cat:'sysContract',catLabel:'システム契約取りまとめ',phase:'ph4',name:'データ移行計画の策定',pri:2,due:'9/15',status:'未着手',memo:'神奈川エアーメッセンジャーのシステムからKAM用システムへのデータ移行計画\n社員マスタ・車両データ・取引先情報等の移行手順と移行テストスケジュール',prog:'',admin:'',eduFlag:false},
+
+  // カテゴリ：財務・経理
+  {id:'t02',cat:'finance',catLabel:'財務・経理',phase:'ph1',name:'税務署届出①：青色申告承認申請書',pri:3,due:'4/30',status:'未着手',memo:'設立から2ヶ月以内（または最初の確定申告期限前日まで）に提出。経理担当として即着手',prog:'',admin:'',eduFlag:false},
+  {id:'t03',cat:'finance',catLabel:'財務・経理',phase:'ph1',name:'税務署届出②：給与支払事務所等の開設届',pri:3,due:'4/25',status:'未着手',memo:'給与支払い開始から1ヶ月以内。源泉所得税の納付に必要',prog:'',admin:'',eduFlag:false},
+  {id:'t04',cat:'finance',catLabel:'財務・経理',phase:'ph1',name:'税務署届出③：源泉所得税の納期特例申請',pri:3,due:'4/30',status:'未着手',memo:'常時10人未満なら毎月→半年払いに変更可。資金繰り上のメリット大',prog:'',admin:'',eduFlag:false},
+  {id:'t05',cat:'finance',catLabel:'財務・経理',phase:'ph1',name:'法人銀行口座の開設・整備',pri:3,due:'4/25',status:'未着手',memo:'定款・登記事項証明書・印鑑証明書が必要。給与振込・仕入支払い用の口座を整備',prog:'',admin:'',eduFlag:false},
+  {id:'t06',cat:'finance',catLabel:'財務・経理',phase:'ph1',name:'事業計画書・資金繰り表の作成（サポート）',pri:2,due:'5/31',status:'未着手',memo:'社長・社労士と連携。初年度P/L予測・月次資金繰り表。助成金申請書類にも添付',prog:'',admin:'',eduFlag:false},
+  {id:'t07',cat:'finance',catLabel:'財務・経理',phase:'ph4',name:'会計ソフトの選定・導入（弥生 or freee）',pri:2,due:'8/15',status:'未着手',memo:'KAM名義で新規契約。銀行口座・クレカ連携。経費精算機能の設定',prog:'',admin:'',eduFlag:false},
+  {id:'t08',cat:'finance',catLabel:'財務・経理',phase:'ph4',name:'会計ソフト初期設定（勘定科目・取引先登録）',pri:2,due:'8/31',status:'未着手',memo:'車両ごとの経費管理（燃料・保険・リース）を勘定科目に反映。月次試算表のフォーマット作成',prog:'',admin:'',eduFlag:false},
+
+  // カテゴリ：社会・労働保険
+  {id:'t09',cat:'insurance',catLabel:'社会・労働保険',phase:'ph1',name:'労働保険 保険関係成立届（書類サポート）',pri:3,due:'4/25',status:'未着手',memo:'【要教育】事業開始から10日以内に労基署へ提出。労災保険の起点となる最重要手続き。社労士と連携して書類準備・管理を担当',prog:'',admin:'',eduFlag:true},
+  {id:'t10',cat:'insurance',catLabel:'社会・労働保険',phase:'ph1',name:'雇用保険 適用事業所設置届（書類サポート）',pri:3,due:'4/25',status:'未着手',memo:'【要教育】事業開始から10日以内にハローワークへ提出。助成金申請に必要な事業所番号を取得',prog:'',admin:'',eduFlag:true},
+  {id:'t11',cat:'insurance',catLabel:'社会・労働保険',phase:'ph1',name:'社会保険 新規適用届（書類サポート）',pri:3,due:'4/30',status:'未着手',memo:'【要教育】年金事務所へ提出。健康保険・厚生年金保険の適用事業所手続き。被保険者資格取得届と同時提出',prog:'',admin:'',eduFlag:true},
+  {id:'t12',cat:'insurance',catLabel:'社会・労働保険',phase:'ph5',name:'転籍者7名 社保・雇保 資格取得届',pri:3,due:'10/10',status:'未着手',memo:'【要教育】転籍（入社）日から5日以内に提出。7名分を同時処理。マイナンバー・標準報酬月額の確認が必要',prog:'',admin:'',eduFlag:true},
+
+  // カテゴリ：就業規則・規程
+  {id:'t13',cat:'labor',catLabel:'就業規則・規程',phase:'ph1',name:'就業規則関連書類のファイリング・版管理',pri:3,due:'5/31',status:'未着手',memo:'【要教育】就業規則・育休規程・賃金規程・退職金規程の管理台帳を作成。「旧版を捨てない」が助成金申請の鉄則',prog:'',admin:'',eduFlag:true},
+  {id:'t14',cat:'labor',catLabel:'就業規則・規程',phase:'ph2',name:'育児・介護休業規程の書類管理',pri:2,due:'6/10',status:'未着手',memo:'【要教育】社労士が作成した規程を受領・ファイリング。助成金申請時に「整備済み証明」として必要。内容の概要も把握',prog:'',admin:'',eduFlag:true},
+  {id:'t15',cat:'labor',catLabel:'就業規則・規程',phase:'ph2',name:'賃金規程・退職金規程の書類管理',pri:2,due:'6/10',status:'未着手',memo:'転籍者の現行条件と新条件を対比した比較表を作成。賃金引上げ（助成金要件）の記録を保管',prog:'',admin:'',eduFlag:true},
+
+  // カテゴリ：協定・届出
+  {id:'t16',cat:'agreement',catLabel:'協定・届出',phase:'ph2',name:'36協定 締結書類の管理',pri:3,due:'6/15',status:'未着手',memo:'【要教育】社労士・社長が主体となって締結する協定書の管理担当。労基署届出の控えと合わせてファイリング',prog:'',admin:'',eduFlag:true},
+  {id:'t17',cat:'agreement',catLabel:'協定・届出',phase:'ph2',name:'転籍同意書の作成・管理（7名分）',pri:3,due:'6/30',status:'未着手',memo:'【要教育】各転籍者から書面で同意取得。労働条件通知書（新条件）を同時作成。7名分の個人別ファイルを管理',prog:'',admin:'',eduFlag:true},
+  {id:'t18',cat:'agreement',catLabel:'協定・届出',phase:'ph2',name:'運行管理者・整備管理者 選任届の書類準備',pri:2,due:'6/30',status:'未着手',memo:'【要教育】運輸支局への届出書類を整理・管理。運行管理者（貨物）の資格証の写しが必要',prog:'',admin:'',eduFlag:true},
+
+  // カテゴリ：助成金・補助金
+  {id:'t19',cat:'subsidy',catLabel:'助成金・補助金',phase:'ph2',name:'社労士との助成金申請スケジュール管理',pri:3,due:'6/5',status:'未着手',memo:'【要教育】【2026年度更新】65歳超雇用推進・キャリアアップ・両立支援・人材開発・トライアル雇用・働き方改革推進支援・業務改善の7本柱＋経産省系補助金の申請スケジュールを社労士と確認。期限管理を担当。\n★2026年度は「賃上げ」と「リスキリング」が二本柱で多くの助成金が拡充。運送業向け新コース（取引環境改善コース）も新設予定',prog:'',admin:'',eduFlag:true},
+  {id:'t20',cat:'subsidy',catLabel:'助成金・補助金',phase:'ph2',name:'65歳超雇用推進助成金 書類準備',pri:3,due:'7/15',status:'未着手',memo:'【要教育】【R8改正】定年引上げ実施日の翌月から4ヶ月以内に申請。旧就業規則（定年59歳）の控えと新就業規則（定年65歳）の両方が必要。\n★R8.4.8改正: 受給額15〜240万円に変更。他社継続雇用制度は定率→定額助成に変更。高年齢者無期雇用転換コースは30万→40万円/人に増額。専門家委託要件が廃止され申請しやすくなった',prog:'',admin:'',eduFlag:true},
+  {id:'t21',cat:'subsidy',catLabel:'助成金・補助金',phase:'ph2',name:'キャリアアップ助成金 計画届書類準備',pri:3,due:'6/15',status:'未着手',memo:'【要教育】【R8新設あり】実施前に計画届が必須。転籍後の正社員化・賃金改定と連動。社労士と共同作成。\n★R8新設「情報公表加算」: 非正規雇用労働者の情報を自社HP又は厚労省サイトで公表した事業主に+20万円（中小企業）/+15万円（大企業）を1事業所1回限り加算',prog:'',admin:'',eduFlag:true},
+  {id:'t22',cat:'subsidy',catLabel:'助成金・補助金',phase:'ph2',name:'人材開発支援助成金 計画届書類準備',pri:3,due:'6/30',status:'未着手',memo:'【要教育】【R8拡充】初任運転者教育35時間を助成対象として申請。訓練計画の事前届出が必須。経費・受講者の記録を整備。\n★運送業活用ポイント: 準中型・中型・大型免許取得も助成対象。訓練費用の45%助成＋受講者1人1時間760円の賃金助成。入社5年以内かつ35歳未満が対象。R8年度は分割支給申請が導入され活用しやすくなった',prog:'',admin:'',eduFlag:true},
+  {id:'t23',cat:'subsidy',catLabel:'助成金・補助金',phase:'ph4',name:'デジタル化・AI導入補助金 申請書類準備（旧IT導入補助金）',pri:2,due:'8/15',status:'未着手',memo:'【要教育】【R8名称変更】IT導入補助金→「デジタル化・AI導入補助金」に名称変更。IT事業者（Jinjer・デジタコ等）を通じた申請。最大450万円。\n★5つの申請枠: 通常枠・インボイス枠・セキュリティ対策推進枠・複数社連携枠・AI導入枠。補助率1/2（小規模事業者は賃上げ等で最大4/5に引上げ可）。配車管理・デジタコ連携・勤怠管理システム導入に活用',prog:'',admin:'',eduFlag:true},
+  {id:'t49',cat:'subsidy',catLabel:'助成金・補助金',phase:'ph2',name:'トライアル雇用助成金 活用検討・書類準備',pri:2,due:'6/30',status:'未着手',memo:'【要教育】【2026年度】ハローワーク紹介による新規雇用者を3ヶ月間試行雇用。月額4万円×最長3ヶ月=最大12万円/人（母子・父子家庭は月額5万円）。\n★KAM活用: 転籍者以外の新規ドライバー採用時に活用。ハローワークに求人登録→紹介→トライアル雇用開始→3ヶ月後に常用雇用へ移行が基本フロー',prog:'',admin:'',eduFlag:true},
+  {id:'t50',cat:'subsidy',catLabel:'助成金・補助金',phase:'ph2',name:'働き方改革推進支援助成金（業種別課題対応コース）申請準備',pri:3,due:'7/31',status:'未着手',memo:'【要教育】【2026年度予算101億円】運送業対象の専用コース。時間外労働削減・休日増加等の取組を支援。\n★対象: デジタコ導入・更新、労務管理ソフト導入、洗車機等設備導入。成果目標設定が必要（時間外削減・休日増等）。\n★R8新設予定「取引環境改善コース」: 荷待ち・荷役時間短縮を支援する運送業向け新コース',prog:'',admin:'',eduFlag:true},
+  {id:'t51',cat:'subsidy',catLabel:'助成金・補助金',phase:'ph2',name:'業務改善助成金 申請検討',pri:2,due:'7/31',status:'未着手',memo:'【要教育】【R8予算35億円（前年比20億増）】事業場内最低賃金引上げ＋設備投資で助成。\n★R8改正: 助成率区分見直し・賃金引上げ枠を3コースに再編。運送業はフォークリフト・冷凍車・荷役設備等の導入が対象。最低賃金引上げと連動した特例措置あり',prog:'',admin:'',eduFlag:true},
+  {id:'t52',cat:'subsidy',catLabel:'助成金・補助金',phase:'ph3',name:'特定求職者雇用開発助成金（成長分野等）検討',pri:2,due:'8/15',status:'未着手',memo:'【要教育】【2026年度】高齢者・障害者等の就職困難者をハローワーク紹介で雇入れた場合の助成。\n★人材育成メニュー: 人材開発支援助成金と連携した訓練実施＋3年以内5%賃上げで高額助成。新規ドライバー（未経験者）の雇入れ時に活用可能性あり',prog:'',admin:'',eduFlag:true},
+  {id:'t53',cat:'subsidy',catLabel:'助成金・補助金',phase:'ph3',name:'中小企業省力化投資補助金 申請検討',pri:2,due:'8/31',status:'未着手',memo:'【要教育】【R8改定済】カタログ注文型の補助金。人手不足対応のための省力化設備導入を支援。\n★運送業活用: 自動仕分け装置・積載効率化システム・配車最適化ツール等。売上拡大・生産性向上が要件',prog:'',admin:'',eduFlag:true},
+  {id:'t54',cat:'subsidy',catLabel:'助成金・補助金',phase:'ph3',name:'事業承継・M&A補助金 申請検討',pri:2,due:'8/31',status:'未着手',memo:'【要教育】【2026年度】KAM株式会社は神奈川エアーメッセンジャーからの事業承継に該当する可能性。\n★4つの枠: 経営革新枠・専門家活用枠・PMI枠・廃業再チャレンジ枠。設備投資・専門家費用を補助。賃上げ要件あり',prog:'',admin:'',eduFlag:true},
+  {id:'t55',cat:'subsidy',catLabel:'助成金・補助金',phase:'ph4',name:'新事業進出・ものづくり補助金 申請検討',pri:2,due:'9/15',status:'未着手',memo:'【要教育】【R8統合新設】旧ものづくり補助金と新事業進出補助金が統合。中小企業の革新的サービス開発・設備投資を支援。\n★KAM活用: 新規事業としての一般貨物運送事業開始に伴う設備投資（車両関連・倉庫設備等）に活用可能性',prog:'',admin:'',eduFlag:true},
+
+  // カテゴリ：車両・保険
+  {id:'t24',cat:'vehicle',catLabel:'車両・保険',phase:'ph3',name:'車両譲渡関連書類の管理（8台分）',pri:3,due:'7/15',status:'未着手',memo:'【要教育】譲渡証明書・印鑑証明書・委任状の収集。車両ごとにフォルダ管理。名義変更完了後も保管',prog:'',admin:'',eduFlag:true},
+  {id:'t25',cat:'vehicle',catLabel:'車両・保険',phase:'ph3',name:'自動車保険 契約管理（新規8台分）',pri:3,due:'8/15',status:'未着手',memo:'【要教育】緑ナンバー専用保険（対人:神奈川交通共済、対物:損保ジャパン等）。保険証券と支払い明細を管理',prog:'',admin:'',eduFlag:true},
+  {id:'t26',cat:'vehicle',catLabel:'車両・保険',phase:'ph3',name:'リース契約の承継・書類管理',pri:2,due:'8/15',status:'未着手',memo:'ヤマトリース・Mobilots・トヨタファイナンス等の承継手続き。経理として月次リース料支払い管理表を作成',prog:'',admin:'',eduFlag:false},
+
+  // カテゴリ：IT・システム
+  {id:'t27',cat:'it',catLabel:'IT・システム',phase:'ph4',name:'Jinjer 社員マスタ登録（7名分）',pri:3,due:'8/31',status:'未着手',memo:'【要教育】KAM名義でJinjerアカウント開設後に実施。氏名・住所・給与条件・通勤経路等を登録',prog:'',admin:'',eduFlag:true},
+  {id:'t28',cat:'it',catLabel:'IT・システム',phase:'ph4',name:'Jinjer 給与計算初期設定',pri:3,due:'9/15',status:'未着手',memo:'【要教育】就業規則・賃金規程をもとにJinjerの給与計算ルールを設定。支給・控除項目のマッピング',prog:'',admin:'',eduFlag:true},
+  {id:'t29',cat:'it',catLabel:'IT・システム',phase:'ph5',name:'初回給与計算（Jinjer）テスト実施',pri:3,due:'10/25',status:'未着手',memo:'転籍者7名の初回給与計算をJinjerで実施。控除計算（社保・雇保・税）の確認。管理者とダブルチェック',prog:'',admin:'',eduFlag:false},
+
+  // カテゴリ：転籍・入社手続き
+  {id:'t30',cat:'transfer',catLabel:'転籍・入社手続き',phase:'ph5',name:'転籍者7名 入社書類セットの作成',pri:3,due:'10/5',status:'未着手',memo:'【要教育】労働条件通知書・誓約書・個人情報同意書・給与振込口座届等のセットを人数分準備。社労士に書式確認',prog:'',admin:'',eduFlag:true},
+  {id:'t31',cat:'transfer',catLabel:'転籍・入社手続き',phase:'ph5',name:'健康診断・適性診断の手配',pri:2,due:'10/20',status:'未着手',memo:'雇入れ時健康診断（全員）＋運転者の適性診断。医療機関・診断機関の予約調整と費用管理',prog:'',admin:'',eduFlag:false},
+
+  // カテゴリ：運行管理書類
+  {id:'t32',cat:'ops',catLabel:'運行管理書類',phase:'ph5',name:'運行管理法定書類の様式整備',pri:3,due:'10/10',status:'未着手',memo:'【要教育】点呼記録簿・運転日報・運転者台帳・乗務等の記録の様式を準備。Jinjer連携可能な部分は電子化',prog:'',admin:'',eduFlag:true},
+  {id:'t33',cat:'ops',catLabel:'運行管理書類',phase:'ph5',name:'書類保管期間・管理体制の構築',pri:2,due:'10/20',status:'未着手',memo:'【要教育】法定書類の保管期間（1年・3年・5年）を確認し管理フォルダ設計。クラウドバックアップ体制を整備',prog:'',admin:'',eduFlag:true},
+
+  // カテゴリ：教育・学習
+  {id:'t34',cat:'edu',catLabel:'教育・学習',phase:'ph1',name:'【学習1】一般貨物運送事業の基礎習得',pri:3,due:'4/30',status:'未着手',memo:'国交省Q&A・改善基準告示パンフを読み込む。「緑ナンバーの意味」「5台以上の要件」「許可と開始届の違い」を理解',prog:'',admin:'',eduFlag:true},
+  {id:'t35',cat:'edu',catLabel:'教育・学習',phase:'ph1',name:'【学習2】社会保険・雇用保険の実務基礎',pri:3,due:'4/30',status:'未着手',memo:'年金事務所・ハローワークの各パンフを読む。4保険の違いと担当窓口を整理。社労士に質問事項をまとめて確認',prog:'',admin:'',eduFlag:true},
+  {id:'t36',cat:'edu',catLabel:'教育・学習',phase:'ph1',name:'【学習3】就業規則・36協定・育休規程の基礎',pri:2,due:'5/31',status:'未着手',memo:'全ト協モデル就業規則・厚労省36協定ガイドブック・育休法のあらまし。社労士打合せ前に読んで質問リスト作成',prog:'',admin:'',eduFlag:true},
+  {id:'t37',cat:'edu',catLabel:'教育・学習',phase:'ph2',name:'【学習4】助成金申請の仕組みと実務（社労士同席）',pri:2,due:'6/30',status:'未着手',memo:'社労士と2時間の勉強会を実施。【2026年度拡大】65歳超・キャリアアップ・両立支援・人材開発・トライアル雇用・働き方改革推進支援・業務改善の7本柱＋経産省系補助金（デジタル化AI導入・省力化投資・事業承継M&A・ものづくり）を学ぶ。書類管理フローを確認。厚労省:https://www.mhlw.go.jp 経産省:https://www.meti.go.jp も参照',prog:'',admin:'',eduFlag:true},
+];
+
+// ─── CATEGORY ORDER & COLORS ───
+const CAT_CONFIG = {
+  inherit: {label:'前月引継ぎ', color:'var(--text-mid)', bg:'var(--bg)'},
+  property:{label:'土地建屋・契約データ化（最優先）', color:'#C46B8A', bg:'#FFF0F3'},
+  sysContract:{label:'システム契約取りまとめ', color:'#9B6BF7', bg:'var(--purple-light)'},
+  finance: {label:'財務・経理（得意分野）', color:'var(--primary)', bg:'var(--primary-light)'},
+  insurance:{label:'社会・労働保険（要教育）', color:'var(--green)', bg:'var(--green-light)'},
+  labor:   {label:'就業規則・規程（要教育）', color:'var(--cyan)', bg:'var(--cyan-light)'},
+  agreement:{label:'協定・届出（要教育）', color:'var(--purple)', bg:'var(--purple-light)'},
+  subsidy: {label:'助成金・補助金（要教育）', color:'var(--gold)', bg:'var(--gold-light)'},
+  vehicle: {label:'車両・保険（要教育）', color:'var(--orange)', bg:'var(--orange-light)'},
+  it:      {label:'IT・システム（要教育）', color:'var(--pink)', bg:'var(--pink-light)'},
+  transfer:{label:'転籍・入社手続き（要教育）', color:'var(--cyan)', bg:'var(--cyan-light)'},
+  ops:     {label:'運行管理書類（要教育）', color:'var(--red)', bg:'var(--red-light)'},
+  edu:     {label:'教育・学習', color:'var(--green)', bg:'var(--green-light)'},
+};
+const CAT_ORDER = ['inherit','property','sysContract','finance','insurance','labor','agreement','subsidy','vehicle','it','transfer','ops','edu'];
+
+let currentPhaseFilter = '';
+
+// ── サーバーAPI通信ヘルパー ──
+var _serverOk=false;
+function getApiBase(){try{if(location.protocol==='file:')return'http://localhost:8080'}catch(e){}return''}
+function _updSI(){var el=document.getElementById('serverConnStatus');if(el){el.style.background=_serverOk?'#10B981':'#EF4444';el.style.color='#fff';el.textContent=_serverOk?'🟢 サーバー接続中':'🔴 サーバー未接続'}}
+var _fetching=false;
+
+function _applyData(saved){
+  if(!saved) return;
+  const mgStMap={'□ 未着手':'未着手','▶ 進行中':'進行中','◎ 完了':'完了','△ 延期':'遅延/保留','✕ 保留':'遅延/保留'};
+  const mgPrMap={'★★★ 高':3,'★★☆ 中':2,'★☆☆ 低':1};
+  try{
+    const data = typeof saved==='string'?JSON.parse(saved):saved;
+    TASKS.forEach(t=>{
+      const d=data[t.id];
+      if(!d) return;
+      if(d.mgStatus && mgStMap[d.mgStatus]) t.status = mgStMap[d.mgStatus];
+      else if(d.status) t.status = d.status;
+      if(d.prog!==undefined) t.prog  = d.prog;
+      if(d.admin!==undefined) t.admin = d.admin;
+      if(d.mgTask) t.name = d.mgTask;
+      if(d.mgProcedure!==undefined) t.memo = d.mgProcedure;
+      if(d.mgPriority && mgPrMap[d.mgPriority]) t.pri = mgPrMap[d.mgPriority];
+      if(d.mgDeadline){
+        if(d.mgDeadline==='随時'){ t.due='随時'; }
+        else{
+          const m=d.mgDeadline.match(/\d{4}-(\d{1,2})-(\d{1,2})/);
+          if(m) t.due=parseInt(m[1])+'/'+parseInt(m[2]);
+        }
+      }
+    });
+  }catch(e){}
+}
+function _syokoScore(data){if(!data||typeof data!=='object')return 0;var s=0;Object.keys(data).forEach(function(k){var v=data[k];if(!v)return;if(v.status==='完了'||v.mgStatus==='◎ 完了')s+=3;else if(v.status==='進行中'||v.mgStatus==='▶ 進行中')s+=2;else if(v.status==='遅延/保留'||v.mgStatus==='△ 延期'||v.mgStatus==='✕ 保留')s+=1;if(v.prog&&v.prog.trim())s+=1;if(v.admin&&v.admin.trim())s+=1});return s}
+function loadFromStorage(){
+  // localStorageから即時ロード
+  var saved = localStorage.getItem('kam_progress_shibaguchi_202604');
+  _applyData(saved);
+  // サーバーから非同期で取得して更新（進捗スコアで競合解決）
+  if(!_fetching){
+    _fetching=true;
+    var base=getApiBase();
+    fetch(base+'/api/syoko').then(function(r){return r.json()}).then(function(sd){
+      _serverOk=true;_updSI();
+      if(sd&&typeof sd==='object'){
+        localStorage.setItem('kam_progress_shibaguchi_202604',JSON.stringify(sd));_applyData(sd);renderTable();
+      }
+    }).catch(function(){_serverOk=false;_updSI()}).finally(function(){_fetching=false});
+  }
+}
+
+function saveToStorage(){
+  const data={};
+  TASKS.forEach(t=>{ data[t.id]={status:t.status,prog:t.prog,admin:t.admin}; });
+  localStorage.setItem('kam_progress_shibaguchi_202604', JSON.stringify(data));
+  var base=getApiBase();
+  fetch(base+'/api/syoko',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(data)}).then(function(r){_serverOk=r.ok;_updSI()}).catch(function(){_serverOk=false;_updSI()});
+}
+
+function renderTable(){
+  const body = document.getElementById('taskBody');
+  body.innerHTML='';
+  const grouped={};
+  CAT_ORDER.forEach(c=>grouped[c]=[]);
+  TASKS.forEach(t=>{ if(grouped[t.cat]) grouped[t.cat].push(t); });
+  let no=1;
+  CAT_ORDER.forEach(cat=>{
+    const tasks = grouped[cat];
+    if(!tasks||tasks.length===0) return;
+    const cfg = CAT_CONFIG[cat];
+    const catId = 'cat-'+cat;
+    const tr = document.createElement('tr');
+    tr.className='cat-row';
+    tr.setAttribute('data-catid',catId);
+    tr.onclick=()=>toggleCat(catId);
+    const done = tasks.filter(t=>t.status==='完了').length;
+    const pct = tasks.length>0?Math.round(done/tasks.length*100):0;
+    tr.innerHTML=`<td colspan="9" style="color:${cfg.color};">
+      <span class="cat-toggle" id="toggle-${catId}">▼</span>
+      <span style="background:${cfg.bg};color:${cfg.color};padding:3px 10px;border-radius:6px;font-size:11px;">${cfg.label}</span>
+      <span class="cat-count">${done}/${tasks.length}件</span>
+      <span class="cat-progress">
+        <span style="font-size:10px;color:var(--text-light);">${pct}%</span>
+        <span class="mini-bar"><span class="mini-bar-fill" style="width:${pct}%;background:${cfg.color};"></span></span>
+      </span>
+    </td>`;
+    body.appendChild(tr);
+    tasks.forEach(t=>{
+      const row = document.createElement('tr');
+      row.className='task-row';
+      row.setAttribute('data-cat',t.cat);
+      row.setAttribute('data-phase',t.phase);
+      row.setAttribute('data-id',t.id);
+      row.setAttribute('data-catid',catId);
+      const priStars='★'.repeat(t.pri)+'☆'.repeat(3-t.pri);
+      const statusClass = {未着手:'s-todo',進行中:'s-active',完了:'s-done','遅延/保留':'s-delay'}[t.status]||'s-todo';
+      const eduBadge = t.eduFlag?'<span class="edu-badge">要教育</span>':'';
+      row.innerHTML=`
+        <td>${no}</td>
+        <td><span class="cat-tag ct-${t.cat}">${t.catLabel}</span></td>
+        <td style="font-size:13px;font-weight:600;color:var(--text-dark);">${t.name}${eduBadge}</td>
+        <td><span style="font-size:13px;color:${t.pri===3?'var(--red)':t.pri===2?'var(--orange)':'var(--text-light)'};">${priStars}</span></td>
+        <td style="font-size:12px;font-weight:600;color:var(--text-mid);">${t.due}</td>
+        <td><button class="status-badge ${statusClass}" onclick="cycleStatus('${t.id}',this)">${t.status}</button></td>
+        <td><div class="memo-cell">${t.memo}</div></td>
+        <td><div class="prog-cell" contenteditable="true" onblur="saveProg('${t.id}',this)">${t.prog||'<span style=color:var(--border);font-size:10px>ダブルクリックで入力</span>'}</div></td>
+        <td><div class="admin-cell" contenteditable="true" onblur="saveAdmin('${t.id}',this)">${t.admin||''}</div></td>
+      `;
+      body.appendChild(row);
+      no++;
+    });
+  });
+  updateKPIs();
+}
+
+function toggleCat(catId){
+  const rows = document.querySelectorAll(`[data-catid="${catId}"].task-row`);
+  const toggle = document.getElementById(`toggle-${catId}`);
+  const isHidden = rows.length>0 && rows[0].classList.contains('hidden');
+  rows.forEach(r=>r.classList.toggle('hidden',!isHidden));
+  if(toggle) toggle.textContent = isHidden?'▼':'▶';
+}
+
+const STATUS_CYCLE=['未着手','進行中','完了','遅延/保留'];
+function cycleStatus(id,btn){
+  const t = TASKS.find(x=>x.id===id);
+  if(!t) return;
+  const idx = STATUS_CYCLE.indexOf(t.status);
+  t.status = STATUS_CYCLE[(idx+1)%STATUS_CYCLE.length];
+  btn.textContent = t.status;
+  const cls = {未着手:'s-todo',進行中:'s-active',完了:'s-done','遅延/保留':'s-delay'}[t.status];
+  btn.className = 'status-badge '+cls;
+  saveToStorage();
+  updateKPIs();
+  renderCatProgress(t.cat);
+}
+
+function saveProg(id,el){
+  const t=TASKS.find(x=>x.id===id);
+  if(t){ t.prog=el.innerText; saveToStorage(); }
+}
+function saveAdmin(id,el){
+  const t=TASKS.find(x=>x.id===id);
+  if(t){ t.admin=el.innerText; saveToStorage(); }
+}
+
+function renderCatProgress(cat){
+  const catId='cat-'+cat;
+  const tasks=TASKS.filter(t=>t.cat===cat);
+  const done=tasks.filter(t=>t.status==='完了').length;
+  const pct=tasks.length>0?Math.round(done/tasks.length*100):0;
+  const fill=document.querySelector(`[data-catid="${catId}"].cat-row .mini-bar-fill`);
+  const pctEl=document.querySelector(`[data-catid="${catId}"].cat-row .cat-progress span`);
+  if(fill) fill.style.width=pct+'%';
+  if(pctEl) pctEl.textContent=pct+'%';
+  const countEl=document.querySelector(`[data-catid="${catId}"].cat-row .cat-count`);
+  if(countEl) countEl.textContent=`${done}/${tasks.length}件`;
+}
+
+function updateKPIs(){
+  const total=TASKS.length;
+  const done=TASKS.filter(t=>t.status==='完了').length;
+  const active=TASKS.filter(t=>t.status==='進行中').length;
+  const todo=TASKS.filter(t=>t.status==='未着手').length;
+  const delay=TASKS.filter(t=>t.status==='遅延/保留').length;
+  const high=TASKS.filter(t=>t.pri===3).length;
+  const today=new Date();
+  const over=TASKS.filter(t=>{
+    if(t.status==='完了') return false;
+    const parts=t.due.replace(/[月日]/g,'/').split('/');
+    if(parts.length<2) return false;
+    const d=new Date(2026,parseInt(parts[0])-1,parseInt(parts[1]));
+    return d<today;
+  }).length;
+  const pct=total>0?Math.round(done/total*100):0;
+  document.getElementById('kpi-rate-val').textContent=pct+'%';
+  document.getElementById('kpi-rate-sub').textContent=`${done}/${total}件`;
+  document.getElementById('kpi-active-val').textContent=active;
+  document.getElementById('kpi-todo-val').textContent=todo;
+  document.getElementById('kpi-delay-val').textContent=delay;
+  document.getElementById('kpi-high-val').textContent=high;
+  document.getElementById('kpi-over-val').textContent=over;
+}
+
+function applyFilters(){
+  const search=document.querySelector('.search-box').value.toLowerCase();
+  const fStatus=document.getElementById('f-status').value;
+  const fPri=document.getElementById('f-pri').value;
+  const fCat=document.getElementById('f-cat').value;
+  document.querySelectorAll('.task-row').forEach(row=>{
+    const id=row.getAttribute('data-id');
+    const t=TASKS.find(x=>x.id===id);
+    if(!t){row.style.display='none';return;}
+    const matchSearch=!search||(t.name.toLowerCase().includes(search)||t.memo.toLowerCase().includes(search));
+    const matchStatus=!fStatus||t.status===fStatus;
+    const matchPri=!fPri||String(t.pri)===fPri;
+    const matchCat=!fCat||t.cat===fCat;
+    const matchPhase=!currentPhaseFilter||t.phase===currentPhaseFilter;
+    row.style.display=(matchSearch&&matchStatus&&matchPri&&matchCat&&matchPhase)?'':'none';
+  });
+}
+
+function filterPhase(phase){
+  currentPhaseFilter=phase;
+  applyFilters();
+}
+
+function switchTab(tab,el){
+  document.querySelectorAll('.tab-content').forEach(t=>t.classList.remove('active'));
+  document.getElementById('tab-'+tab).classList.add('active');
+  document.querySelectorAll('.nav-item').forEach(n=>n.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));
+  if(el){
+    el.classList.add('active');
+    // also sync tab-btn
+    const tabBtnMap={tasks:'📋 タスク一覧',edu:'📚 教育スケジュール',materials:'📖 学習資料一覧'};
+    document.querySelectorAll('.tab-btn').forEach(b=>{ if(b.textContent.trim().startsWith(tabBtnMap[tab]?.slice(0,2)||'__')) b.classList.add('active'); });
+  }
+}
+
+
+
+// ─── INIT ───
+let _isEditing = false;
+document.addEventListener('focusin', e=>{
+  if(e.target && e.target.getAttribute && e.target.getAttribute('contenteditable')==='true') _isEditing=true;
+});
+document.addEventListener('focusout', e=>{
+  if(e.target && e.target.getAttribute && e.target.getAttribute('contenteditable')==='true') _isEditing=false;
+});
+
+function _syncFromManager(){
+  if(_isEditing) return;
+  const before = JSON.stringify(TASKS.map(t=>({id:t.id,status:t.status,prog:t.prog,admin:t.admin})));
+  loadFromStorage();
+  const after  = JSON.stringify(TASKS.map(t=>({id:t.id,status:t.status,prog:t.prog,admin:t.admin})));
+  if(before !== after) renderTable();
+}
+
+document.addEventListener('DOMContentLoaded',()=>{
+  // サーバー接続状態表示を更新
+  var connEl=document.getElementById('serverConnStatus');
+  if(!connEl){
+    connEl=document.createElement('div');connEl.id='serverConnStatus';
+    connEl.style.cssText='position:fixed;bottom:10px;right:10px;padding:6px 14px;border-radius:20px;font-size:12px;z-index:9998;box-shadow:0 2px 6px rgba(0,0,0,.15)';
+    document.body.appendChild(connEl);
+  }
+
+  loadFromStorage();
+  renderTable();
+  document.querySelectorAll('.tab-btn')[0].classList.add('active');
+  _updSI();
+
+  // 管理者ファイルの変更を即時反映（別タブからのlocalStorage更新を検知）
+  window.addEventListener('storage', e=>{
+    if(e.key==='kam_progress_shibaguchi_202604') _syncFromManager();
+  });
+
+  // サーバー経由で5秒ごとにポーリング（別PCの管理者からの変更も検知）
+  setInterval(function(){_syncFromManager();_updSI()}, 5000);
+});
+</script>
+</body>
+</html>
